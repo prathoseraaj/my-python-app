@@ -54,7 +54,7 @@ pipeline {
             echo 'Cleaning up workspace...'   
             cleanWs()                                                         // clean the workspace after the pipeline finish
         }
-        sucess{
+        success{
             echo 'Pipeline completed succesfully!'
         }
         failure{
