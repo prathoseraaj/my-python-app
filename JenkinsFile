@@ -2,66 +2,63 @@ pipeline {
     agent any
 
     environment {
-        PYTHON_ENV = 'venv'        // Virtual environment for python
+        PYTHON_ENV = 'venv' // Virtual environment for python
     }
 
     stages {
-        // Stage 1 : Clone the repository
-        stage('checkout') {
+        // Stage 1: Clone the repository
+        stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'main' , url: 'https://github.com/prathoseraaj/my-python-app.git'
+                git branch: 'main', url: 'https://github.com/prathoseraaj/my-python-app.git'
             }
         }
 
-        // stages 2 : Set up the python environment
-        stage('setup Environment'){
-            steps{
+        // Stage 2: Set up the python environment
+        stage('Setup Environment') {
+            steps {
                 echo 'Setting up python virtual environment...'
-                sh'''
+                sh '''
                    python3 -m venv ${PYTHON_ENV}
                    source ${PYTHON_ENV}/bin/activate
-                   pip install -r requirments.txt
-                '''  
+                   pip install -r requirements.txt
+                '''
             }
         }
 
-        // Stage 3 : Run unit tests
+        // Stage 3: Run unit tests
         stage('Run Tests') {
-            steps{
+            steps {
                 echo 'Running unit tests...'
-                sh'''
+                sh '''
                    source ${PYTHON_ENV}/bin/activate
                    pytest tests/
-                '''   
+                '''
             }
         }
 
-        //Stage 4 : Deploy (this could be to a local HTTP server,for example)
-        stage('Deploy'){
-            steps{
+        // Stage 4: Deploy (this could be to a local HTTP server, for example)
+        stage('Deploy') {
+            steps {
                 echo 'Deploying application...'
-                // In this example, we will stimute deployment by copying the code to a server directory
-                sh'''
+                // In this example, we will simulate deployment by copying the code to a server directory
+                sh '''
                    cp -r * /path/to/local/http/server/root/ # copy the app to the deployment directory
                 '''
             }
         }
     }
 
-    post{
+    post {
         always {
-            echo 'Cleaning up workspace...'   
-            cleanWs()                                                         // clean the workspace after the pipeline finish
+            echo 'Cleaning up workspace...'
+            cleanWs() // clean the workspace after the pipeline finishes
         }
-        success{
-            echo 'Pipeline completed succesfully!'
+        success {
+            echo 'Pipeline completed successfully!'
         }
-        failure{
+        failure {
             echo 'Pipeline failed!'
         }
     }
-
-
-
 }
