@@ -18,7 +18,7 @@ pipeline {
         stage('setup Environment'){
             steps{
                 echo 'Setting up python virtual environment...'
-                sh'''
+                bit'''
                    python3 -m venv ${PYTHON_ENV}
                    source ${PYTHON_ENV}/bin/activate
                    pip install -r requirments.txt
@@ -30,7 +30,7 @@ pipeline {
         stage('Run Tests') {
             steps{
                 echo 'Running unit tests...'
-                sh'''
+                bit'''
                    source ${PYTHON_ENV}/bin/activate
                    pytest tests/
                 '''   
@@ -42,7 +42,7 @@ pipeline {
             steps{
                 echo 'Deploying application...'
                 // In this example, we will stimute deployment by copying the code to a server directory
-                sh'''
+                bit'''
                    cp -r * /path/to/local/http/server/root/ # copy the app to the deployment directory
                 '''
             }
