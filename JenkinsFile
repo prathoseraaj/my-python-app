@@ -12,6 +12,9 @@ pipeline {
                 echo "Creating virtual environment..."
                 bat '''
                     C:\\Users\\prath\\AppData\\Roaming\\Python\\Python312\\python.exe -m venv venv
+                '''
+                echo "Activating virtual environment and installing dependencies..."
+                bat '''
                     call venv\\Scripts\\activate.bat
                     venv\\Scripts\\pip.exe install -r requirements.txt
                 '''
@@ -20,7 +23,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo "Running tests..."
-                bat 'venv\\Scripts\\pytest'
+                bat '''
+                    call venv\\Scripts\\activate.bat
+                    venv\\Scripts\\pytest
+                '''
             }
         }
         stage('Deploy') {
